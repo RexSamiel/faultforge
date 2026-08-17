@@ -9,11 +9,9 @@ from faultforge._internal.common import DeviceLike
 from faultforge._internal.dataset import BatchedDataset
 from faultforge._internal.loading.abc import ModelBundle
 from faultforge._internal.progress import Progress
+from faultforge._internal.reliability import AccuracyScorer, ReliabilityScorer
 from faultforge.encoding import IdentityEncoder
-from faultforge.experiments.encoded_memory import (
-    EncodedFaultInjection,
-    ReliabilityMetric,
-)
+from faultforge.experiments.encoded_memory import EncodedFaultInjection
 from torch import nn
 from torch.utils.data import TensorDataset
 
@@ -64,7 +62,7 @@ def _make_experiment(
     faults: int | float = 1,
     golden_is_encoded: bool = False,
     dataset_batch_limit: int | None = None,
-    reliability_metric: ReliabilityMetric = ReliabilityMetric.Accuracy,
+    scorer: ReliabilityScorer | None = None,
     dtype: torch.dtype = torch.float32,
     fault_summary: bool = False,
 ) -> EncodedFaultInjection:
@@ -72,7 +70,7 @@ def _make_experiment(
     return EncodedFaultInjection(
         bundle,
         IdentityEncoder(),
-        reliability_metric,
+        scorer if scorer is not None else AccuracyScorer(),
         golden_is_encoded=golden_is_encoded,
         faults=faults,
         compare_bitwise=compare_bitwise,

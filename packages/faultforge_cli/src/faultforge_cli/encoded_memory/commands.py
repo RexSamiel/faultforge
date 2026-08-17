@@ -5,6 +5,7 @@ import logging
 from pathlib import Path
 from typing import Annotated
 
+import click
 import matplotlib.pyplot as plt
 import torch
 import typer
@@ -30,7 +31,6 @@ from faultforge.experiment import (
 from faultforge.experiments.encoded_memory import (
     DetailedResult,
     EncodedFaultInjection,
-    ReliabilityMetric,
     discard_bitmasks_in_file,
 )
 from faultforge.fingerprint import FingerprintError
@@ -43,6 +43,13 @@ from faultforge.loading import (
     ModelBundle,
 )
 from faultforge.progress import Progress
+from faultforge.reliability import (
+    AccuracyScorer,
+    ReliabilityScorer,
+    find_metric_identifier,
+    metric_from_identifier,
+    registered_identifiers,
+)
 from faultforge_cli.encoded_memory.plots import (
     GroupBy,
     build_compare_figure,
@@ -105,6 +112,25 @@ def _init_model_bundle(
             bundle = ImageNet(kind=imagenet_model, root=imagenet_root)
 
     return bundle
+
+
+def _resolve_scorer(reliability_metric: str) -> ReliabilityScorer:
+    """Construct the `ReliabilityScorer` named by `reliability_metric`."""
+    try:
+        scorer_class = metric_from_identifier(reliability_metric)
+    except ValueError as error:
+        raise typer.BadParameter(
+            str(error), param_hint="--reliability-metric"
+        ) from None
+
+    try:
+        return scorer_class()
+    except TypeError as error:
+        raise typer.BadParameter(
+            f"{reliability_metric!r} needs configuration this CLI doesn't "
+            "support providing yet.",
+            param_hint="--reliability-metric",
+        ) from error
 
 
 def _resolve_encoder(
@@ -213,12 +239,13 @@ def record(
         ),
     ] = False,
     reliability_metric: Annotated[
-        ReliabilityMetric,
+        str,
         typer.Option(
             help="Which metric to use for reliability measurements",
             rich_help_panel="Model Setup",
+            click_type=click.Choice(sorted(registered_identifiers())),
         ),
-    ] = ReliabilityMetric.Accuracy,
+    ] = find_metric_identifier(AccuracyScorer()),
     bit_error_rate: Annotated[
         float | None,
         typer.Option(
@@ -393,11 +420,12 @@ def record(
             )
 
     dtype = torch.float16 if f16 else torch.float32
+    scorer = _resolve_scorer(reliability_metric)
 
     experiment = EncodedFaultInjection(
         bundle,
         encoder,
-        reliability_metric,
+        scorer,
         golden_is_encoded=golden_is_encoded,
         faults=faults_,
         compare_bitwise=compare_bitwise,

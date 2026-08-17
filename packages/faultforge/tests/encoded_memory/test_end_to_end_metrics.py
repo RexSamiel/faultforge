@@ -2,36 +2,42 @@
 
 import pytest
 import torch
-from faultforge.experiments.encoded_memory import ReliabilityMetric
+from faultforge._internal.reliability import (
+    AccuracyDegradationScorer,
+    AccuracyScorer,
+    ReliabilityScorer,
+    SdcScorer,
+    Top1SdcScorer,
+)
 
 from .conftest import _make_experiment, _result
 
 
 @pytest.mark.parametrize(
-    "metric",
+    "scorer",
     [
-        ReliabilityMetric.Accuracy,
-        ReliabilityMetric.AccuracyDegradation,
-        ReliabilityMetric.Sdc,
-        ReliabilityMetric.Top1Sdc,
+        AccuracyScorer(),
+        AccuracyDegradationScorer(),
+        SdcScorer(),
+        Top1SdcScorer(),
     ],
 )
 @pytest.mark.parametrize("golden_is_encoded", [False, True])
 @pytest.mark.parametrize("dtype", [torch.float32, torch.float16])
 def test_all_reliability_metrics_run_end_to_end(
-    metric: ReliabilityMetric, golden_is_encoded: bool, dtype: torch.dtype
+    scorer: ReliabilityScorer, golden_is_encoded: bool, dtype: torch.dtype
 ):
     experiment = _make_experiment(
         compare_bitwise=False,
         golden_is_encoded=golden_is_encoded,
-        reliability_metric=metric,
+        scorer=scorer,
         dtype=dtype,
     )
     experiment.run()
 
     scores = experiment.scores()
     assert len(scores) == 1
-    if metric == ReliabilityMetric.AccuracyDegradation:
+    if isinstance(scorer, AccuracyDegradationScorer):
         # Signed: the faulty model can outscore golden on a tiny random
         # dataset, which shows up as a negative "degradation".
         assert -100.0 <= scores[0] <= 100.0

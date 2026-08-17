@@ -20,11 +20,8 @@ import matplotlib
 import numpy as np
 from faultforge import Fingerprint
 from faultforge.dtype import EncodingDtype
-from faultforge.experiments.encoded_memory import (
-    DetailedResult,
-    ReliabilityMetric,
-    SavedResult,
-)
+from faultforge.experiments.encoded_memory import DetailedResult, SavedResult
+from faultforge.reliability import ReliabilityScorer, find_metric_display_name
 from faultforge_cli.encoded_memory.results import (
     Configuration,
     bit_position_histogram,
@@ -116,9 +113,9 @@ def group_key(group_by: GroupBy, fingerprint: Fingerprint) -> str | None:
             return str(dataset)
 
 
-def _reliability_metric(configuration: Configuration) -> ReliabilityMetric:
+def _reliability_metric(configuration: Configuration) -> type[ReliabilityScorer]:
     _, first = configuration.results[0]
-    return first.reliability_metric()
+    return first.reliability_metric_class()
 
 
 def _cell(axes: Any, row: int, col: int) -> Axes:
@@ -156,7 +153,7 @@ def build_compare_figure(
 
     metrics = {_reliability_metric(config) for config in configurations}
     if len(metrics) > 1:
-        names = sorted(metric.value for metric in metrics)
+        names = sorted(find_metric_display_name(metric) for metric in metrics)
         raise ValueError(
             f"all configurations must share a reliability metric to be "
             f"compared, got {names}"
@@ -228,7 +225,7 @@ def build_compare_figure(
 
     score_label = "Mean" if percentile is None else f"{percentile:g}th Percentile"
     fig.supxlabel("Bit Error Rate")
-    fig.supylabel(f"{score_label} {metric.score_name()} [%]")
+    fig.supylabel(f"{score_label} {find_metric_display_name(metric)} [%]")
 
     fig.legend(
         handles_by_label.values(),
@@ -314,9 +311,9 @@ def build_heatmap_figure(
                 "(a per-run bitmask)"
             )
 
-    metrics = {result.reliability_metric() for result in results}
+    metrics = {result.reliability_metric_class() for result in results}
     if len(metrics) > 1:
-        names = sorted(metric.value for metric in metrics)
+        names = sorted(find_metric_display_name(metric) for metric in metrics)
         raise ValueError(f"all results must share a reliability metric, got {names}")
     metric = next(iter(metrics))
 
@@ -382,7 +379,7 @@ def build_heatmap_figure(
     ax.set_facecolor(background)
 
     image = ax.pcolormesh(x_edges, y_edges, counts.T, cmap=cmap, norm=norm)
-    ax.set_xlabel(f"{metric.score_name()} [%]")
+    ax.set_xlabel(f"{find_metric_display_name(metric)} [%]")
     ax.set_ylabel("Bit Position")
 
     colorbar = fig.colorbar(image, cax=colorbar_ax, ticks=_colorbar_ticks(counts.max()))

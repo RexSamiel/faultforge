@@ -1,6 +1,6 @@
 """Tests for `faultforge_cli.encoded_memory.results.build_configurations`."""
 
-from faultforge.experiments.encoded_memory import ReliabilityMetric
+from faultforge.reliability import SdcScorer
 from faultforge_cli.encoded_memory.results import build_configurations, load_results
 
 
@@ -21,7 +21,7 @@ def test_build_configurations_merges_matching_fingerprints_across_paths(
 
 def test_build_configurations_separates_differing_configurations(tmp_path, save_result):
     save_result(tmp_path / "a.json", faults=1)
-    save_result(tmp_path / "b.json", faults=2, metric=ReliabilityMetric.Sdc)
+    save_result(tmp_path / "b.json", faults=2, metric=SdcScorer())
 
     loaded = load_results([tmp_path])
     configurations = build_configurations(loaded, label_overrides={})

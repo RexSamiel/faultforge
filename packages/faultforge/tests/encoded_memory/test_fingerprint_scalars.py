@@ -3,10 +3,8 @@
 import json
 
 import torch
-from faultforge.experiments.encoded_memory import (
-    EncodedFaultInjection,
-    ReliabilityMetric,
-)
+from faultforge._internal.reliability import SdcScorer
+from faultforge.experiments.encoded_memory import EncodedFaultInjection
 
 from .conftest import _make_experiment
 
@@ -47,7 +45,7 @@ def test_fingerprint_records_golden_and_compare_bitwise_and_metric():
         _make_experiment(
             compare_bitwise=True,
             golden_is_encoded=True,
-            reliability_metric=ReliabilityMetric.Sdc,
+            scorer=SdcScorer(),
         )
     )
     assert scalars["golden"] == "encoded"

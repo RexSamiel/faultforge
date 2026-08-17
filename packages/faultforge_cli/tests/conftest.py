@@ -16,10 +16,8 @@ from faultforge._internal.common import DeviceLike
 from faultforge._internal.dataset import BatchedDataset
 from faultforge._internal.loading.abc import ModelBundle
 from faultforge.encoding import IdentityEncoder
-from faultforge.experiments.encoded_memory import (
-    EncodedFaultInjection,
-    ReliabilityMetric,
-)
+from faultforge.experiments.encoded_memory import EncodedFaultInjection
+from faultforge.reliability import AccuracyScorer, ReliabilityScorer
 from faultforge_cli.encoded_memory.results import (
     Configuration,
     build_configurations,
@@ -91,14 +89,14 @@ def save_result():
         model: str = "toynet",
         dataset: str | None = None,
         dtype: torch.dtype = torch.float32,
-        metric: ReliabilityMetric = ReliabilityMetric.Accuracy,
+        metric: ReliabilityScorer | None = None,
         compare_bitwise: bool = True,
     ) -> Path:
         bundle = _FakeBundle(8, 4, 4, 4, model=model, dataset=dataset)
         experiment = EncodedFaultInjection(
             bundle,
             IdentityEncoder(),
-            metric,
+            metric if metric is not None else AccuracyScorer(),
             faults=faults,
             compare_bitwise=compare_bitwise,
             batch_size=4,
