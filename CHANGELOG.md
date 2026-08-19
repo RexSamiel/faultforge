@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+`faultforge` is now framework-only: no CLI, no ready-made experiments, no
+`faultforge-cli` PyPI package. Experiments live in the repository under
+`experiments/` as their own packages, each pinned to a specific `faultforge`
+version and installed from a pinned git ref rather than published to PyPI.
+This is meant to keep the library itself small and its dependencies minimal
+regardless of how many experiments accumulate over time, while letting an
+individual experiment stop being actively maintained (e.g. once its paper is
+published) without constraining the design of the library.
+
+### Added
+
+- **`DEFAULT_DTYPE`, `open_text`, `bitwise_xor`** are now part of
+  `faultforge`'s public API (previously internal), alongside their
+  already-public siblings (`DEFAULT_BATCH_SIZE`/`DEFAULT_DEVICE`,
+  `is_compressed`, `tensor_list_*`) - needed by code building an experiment
+  outside of `faultforge` itself, which can now only reach `faultforge`
+  through its public API rather than `faultforge._internal`.
+
 ## [0.2.1] - 2026-07-08
 
 `0.2.0`'s release pipeline failed to publish `faultforge` and never

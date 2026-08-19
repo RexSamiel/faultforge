@@ -218,7 +218,8 @@ class Experiment(abc.ABC):
     `AdditionalRuns`, `MaxRuns`). Neither is required - by default `run_loop`
     runs until interrupted.
 
-    See `faultforge.experiments.encoded_memory` for a complete example.
+    See the `encoded_memory` experiment (`experiments/encoded_memory` in the
+    repository) for a complete example.
     """
 
     @abc.abstractmethod

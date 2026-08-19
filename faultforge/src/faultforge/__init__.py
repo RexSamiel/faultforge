@@ -22,19 +22,11 @@ submodules for details.
   (dataset loading, encoding, fault injection, ...) via periodic log messages.
 
 To add a new kind of experiment, subclass `Experiment` and reuse
-`faultforge.loading`/`faultforge.dataset` for model and data handling.
-
-**Ready-made experiments**
-
-`faultforge.experiments` holds experiments built on the framework above.
-Currently there is one, `faultforge.experiments.encoded_memory`: encoded-
-memory fault injection, which measures model reliability under simulated
-single-event upsets in error-corrected parameter memory. It's a complete
-example to follow when adding a new experiment. It's built on:
-
-- `faultforge.encoding`: `Encoder`/`Encoding` pairs that transform tensors into
-  a protected representation and back, plus `EncodedModule` for wrapping a
-  `torch.nn.Module` so its parameters live in simulated encoded memory.
+`faultforge.loading`/`faultforge.dataset` for model and data handling. This
+library only holds the reusable framework - ready-made experiments (e.g.
+`encoded_memory`, built on `faultforge.encoding`) live in the repository's
+top-level `experiments/` directory as their own packages, so pulling in
+`faultforge` never drags in an experiment's own dependencies.
 
 **Fault injection primitives**
 
@@ -49,6 +41,11 @@ root rather than in their own submodule:
   `Encoding.apply_faults`/`EncodedModule.apply_faults`) over injecting one fault
   at a time in a loop: applying a batch pays its conversion overhead once for the
   whole batch rather than once per fault.
+- `bitwise_xor`: elementwise bitwise xor of two same-shape, same-dtype tensors
+  (floats bitcast to same-width integers first).
+- `open_text`: open a path in text mode, transparently through zstd
+  compression if requested - the same helper `Experiment.save`/`load_from`
+  use internally, useful when writing your own save-file format.
 """
 
 import sys
@@ -56,13 +53,16 @@ import sys
 from faultforge._internal.common import (
     DEFAULT_BATCH_SIZE,
     DEFAULT_DEVICE,
+    DEFAULT_DTYPE,
     AnyPath,
     DeviceLike,
     is_compressed,
+    open_text,
 )
 from faultforge._internal.fault import BitFlip, Fault, StuckAt
 from faultforge._internal.fingerprint import Fingerprint
 from faultforge._internal.tensor import (
+    bitwise_xor,
     tensor_list_dtype,
     tensor_list_fault,
     tensor_list_faults,
@@ -76,12 +76,15 @@ __all__ = [
     "BitFlip",
     "DEFAULT_BATCH_SIZE",
     "DEFAULT_DEVICE",
+    "DEFAULT_DTYPE",
     "DeviceLike",
     "Fault",
     "Fingerprint",
     "Picker",
     "StuckAt",
+    "bitwise_xor",
     "is_compressed",
+    "open_text",
     "tensor_list_dtype",
     "tensor_list_fault",
     "tensor_list_faults",

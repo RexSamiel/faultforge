@@ -4,8 +4,8 @@ requires-python = ">=3.14"
 
 [manifest]
 members = [
+    "encoded-memory",
     "faultforge",
-    "faultforge-cli",
 ]
 
 [manifest.dependency-groups]
@@ -181,6 +181,29 @@ wheels = [
 ]
 
 [[package]]
+name = "encoded-memory"
+version = "0.2.1"
+source = { editable = "experiments/encoded_memory" }
+dependencies = [
+    { name = "faultforge" },
+    { name = "matplotlib" },
+    { name = "numpy" },
+    { name = "pydantic" },
+    { name = "torch" },
+    { name = "typer" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "faultforge", editable = "faultforge" },
+    { name = "matplotlib", specifier = ">=3.10.5" },
+    { name = "numpy", specifier = ">=2.3.1" },
+    { name = "pydantic", specifier = ">=2.12.3" },
+    { name = "torch", specifier = ">=2.7.1" },
+    { name = "typer", specifier = ">=0.20.0" },
+]
+
+[[package]]
 name = "faultforge"
 version = "0.2.1"
 source = { editable = "faultforge" }
@@ -212,25 +235,6 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [{ name = "maturin", specifier = ">=1.14.0" }]
-
-[[package]]
-name = "faultforge-cli"
-version = "0.2.1"
-source = { editable = "packages/faultforge_cli" }
-dependencies = [
-    { name = "faultforge" },
-    { name = "matplotlib" },
-    { name = "numpy" },
-    { name = "typer" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "faultforge", editable = "faultforge" },
-    { name = "matplotlib", specifier = ">=3.10.5" },
-    { name = "numpy", specifier = ">=2.3.1" },
-    { name = "typer", specifier = ">=0.20.0" },
-]
 
 [[package]]
 name = "filelock"

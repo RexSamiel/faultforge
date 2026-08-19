@@ -1,5 +1,5 @@
 [tool.uv.workspace]
-members = ["faultforge", "packages/faultforge_cli"]
+members = ["faultforge", "experiments/encoded_memory"]
 
 [tool.uv]
 default-groups = ["dev"]

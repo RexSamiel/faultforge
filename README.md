@@ -34,28 +34,22 @@ its first experiment.
 
 ## Installation
 
-FaultForge is split into two packages:
-
-- [`faultforge`](https://pypi.org/project/faultforge/) - the library.
-- [`faultforge-cli`](https://pypi.org/project/faultforge-cli/) - a CLI built
-  on top of it (installs a `faultforge` command).
-
 ```sh
-pip install faultforge        # library only
-pip install faultforge-cli    # adds the `faultforge` CLI command
+pip install faultforge
 ```
 
-Building from source requires a Rust toolchain, since the library's
-performance-critical parts are a PyO3 extension compiled with
+[`faultforge`](https://pypi.org/project/faultforge/) is the only package
+published to PyPI - it's the framework only, with no CLI and no ready-made
+experiments. Building from source requires a Rust toolchain, since the
+library's performance-critical parts are a PyO3 extension compiled with
 [maturin](https://www.maturin.rs/). Install one with your system package
 manager or via [rustup](https://rustup.rs/). No toolchain is needed when
 installing a prebuilt wheel from PyPI.
 
 ### Installing from source
 
-Both packages live in this repository, under `faultforge` and
-`packages/faultforge_cli`. Point pip at a subdirectory of whichever revision
-you want:
+`faultforge` lives in this repository under `faultforge`. Point pip at a
+subdirectory of whichever revision you want:
 
 ```sh
 # latest (main is kept in sync with the newest code going forward)
@@ -71,21 +65,22 @@ pip install 'faultforge @ git+https://github.com/rezzubs/faultforge.git@v0.2.0#s
 pip install 'faultforge @ git+https://github.com/rezzubs/faultforge.git@<commit-sha>#subdirectory=faultforge'
 ```
 
-Substitute `packages/faultforge_cli` for `faultforge` (and
-`faultforge-cli` for the package name before `@`) to install the CLI the same
-way.
+Ready-made experiments (see [Experiments](#experiments) below) aren't
+published to PyPI - install one the same way, pointed at its own
+subdirectory under `experiments/`, e.g.
+`#subdirectory=experiments/encoded_memory`.
 
 FaultForge requires Python 3.14 or newer.
 
 ## Quick example
 
 ```python
-from faultforge.encoding import SecdedEncoder
-from faultforge.experiment import MaxRuns
-from faultforge.experiments.encoded_memory import (
+from encoded_memory import (
     EncodedFaultInjection,
     ReliabilityMetric,
 )
+from faultforge.encoding import SecdedEncoder
+from faultforge.experiment import MaxRuns
 from faultforge.loading import Cifar, CifarDataset, CifarModel
 
 bundle = Cifar(model=CifarModel.ResNet20, dataset=CifarDataset.Cifar10)
@@ -107,13 +102,14 @@ framework's pieces and how they compose.
 
 ## Experiments
 
-FaultForge ships one ready-made experiment today, built as the reference
-implementation for adding your own:
+Ready-made experiments live under [`experiments/`](experiments) as their own
+packages, each pinned to a specific `faultforge` version rather than tracking
+`main`. There's one today, serving as the reference implementation for
+adding your own:
 
 - [Encoded Memory](docs/experiments/encoded_memory.md) - fault injection into
   ECC-protected model parameters, covering the available encoding techniques,
-  the `faultforge encoded-memory` CLI, and using the experiment directly as a
-  library.
+  the `encoded-memory` CLI, and using the experiment directly as a library.
 
 ## Citation
 

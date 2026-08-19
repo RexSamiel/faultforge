@@ -1,7 +1,7 @@
 # Encoded Memory
 
-`EncodedFaultInjection` (`faultforge.experiments.encoded_memory`) runs a
-model whose parameters are stored through an
+`EncodedFaultInjection` (`encoded_memory`, in the repository's
+`experiments/encoded_memory`) runs a model whose parameters are stored through an
 [`Encoder`](../library.md#encoder--encoding), injects bit flips (or stuck-at
 faults) into that encoded memory, and scores the result according to a
 `ReliabilityMetric`: `Accuracy`, `AccuracyDegradation`, `Sdc` (Silent Data
@@ -10,12 +10,11 @@ Corruption - any output logit changed vs. a golden model), or `Top1Sdc`
 three metrics additionally require a golden (unencoded, or golden-encoded)
 reference run.
 
-It's the one built-in [`Experiment`](../library.md#experiment) today, and
-it's meant to be read as the reference implementation to follow when adding
-a new one.
+It's the reference [`Experiment`](../library.md#experiment) implementation to
+follow when adding a new one.
 
 This document covers the encoding techniques it can use, the
-`faultforge encoded-memory` CLI, and using it directly as a library.
+`encoded-memory` CLI, and using it directly as a library.
 
 ## Encoding techniques
 
@@ -85,11 +84,12 @@ overall. The wider schemes are only worth considering if the lower bits
 
 ## CLI usage
 
-Installing `faultforge-cli` provides a `faultforge` command; all
-encoded-memory functionality lives under its `encoded-memory` subcommand:
+Installing `encoded-memory` (see the [main README](../../README.md#installation)
+for installing an experiment package from source) provides an
+`encoded-memory` command:
 
 ```sh
-faultforge encoded-memory <command> --help
+encoded-memory <command> --help
 ```
 
 ### `record`
@@ -117,7 +117,7 @@ into help panels:
 - **Misc Settings**: `--device`.
 
 ```sh
-faultforge encoded-memory record \
+encoded-memory record \
   --dataset cifar10 --model resnet20 \
   --secded 64 \
   --bit-error-rate 1e-3 \
@@ -131,7 +131,7 @@ faultforge encoded-memory record \
 Plots reliability score vs. bit error rate, one line per configuration:
 
 ```sh
-faultforge encoded-memory compare result-a.json result-b.json=Unprotected --row-by model
+encoded-memory compare result-a.json result-b.json=Unprotected --row-by model
 ```
 
 Accepts result files and/or directories (searched recursively), and
@@ -157,7 +157,7 @@ Shrinks a saved result file by dropping its recorded bitmasks in place,
 without needing to reload the model or dataset that produced it:
 
 ```sh
-faultforge encoded-memory discard-bitmasks result.json.zst
+encoded-memory discard-bitmasks result.json.zst
 ```
 
 ## Library usage
@@ -165,12 +165,12 @@ faultforge encoded-memory discard-bitmasks result.json.zst
 `EncodedFaultInjection` can be used directly, without the CLI:
 
 ```python
-from faultforge.encoding import SecdedEncoder
-from faultforge.experiment import MaxRuns
-from faultforge.experiments.encoded_memory import (
+from encoded_memory import (
     EncodedFaultInjection,
     ReliabilityMetric,
 )
+from faultforge.encoding import SecdedEncoder
+from faultforge.experiment import MaxRuns
 from faultforge.loading import Cifar, CifarDataset, CifarModel
 
 bundle = Cifar(model=CifarModel.ResNet20, dataset=CifarDataset.Cifar10)
@@ -197,7 +197,7 @@ A saved result can be inspected without reconstructing the model or
 dataset that produced it, via `SavedResult`:
 
 ```python
-from faultforge.experiments.encoded_memory import SavedResult
+from encoded_memory import SavedResult
 
 saved = SavedResult.load("result.json")
 saved.scores()               # every recorded run's score, in run order

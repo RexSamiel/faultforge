@@ -55,23 +55,6 @@ jobs:
           name: faultforge-sdist
           path: faultforge/dist
 
-  build-faultforge-cli:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: astral-sh/setup-uv@v6
-        with:
-          enable-cache: true
-
-      - name: Build
-        run: uv build --package faultforge-cli --out-dir dist
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: faultforge-cli-dist
-          path: dist
-
   publish-faultforge:
     needs: [build-faultforge, sdist-faultforge]
     runs-on: ubuntu-latest
@@ -95,25 +78,8 @@ jobs:
           packages-dir: dist
           skip-existing: true
 
-  publish-faultforge-cli:
-    needs: [build-faultforge-cli, publish-faultforge]
-    runs-on: ubuntu-latest
-    environment: pypi-faultforge-cli
-    permissions:
-      id-token: write
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: faultforge-cli-dist
-          path: dist
-
-      - uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          packages-dir: dist
-          skip-existing: true
-
   github-release:
-    needs: [publish-faultforge, publish-faultforge-cli]
+    needs: [publish-faultforge]
     runs-on: ubuntu-latest
     permissions:
       contents: write
