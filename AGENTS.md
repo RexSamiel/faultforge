@@ -11,14 +11,14 @@ experiment framework, model/dataset loading, and CLI live in Python on top of it
 
 - `crates/` - Cargo workspace (Rust): `picker`, `memory`, `bindings` (the PyO3
   extension, compiled as `faultforge._rust`).
-- `packages/` - `uv` workspace (Python): `faultforge` (the library) and
-  `faultforge_cli` (a thin `typer` CLI).
+- `faultforge/` - the `faultforge` library, the main member of the `uv`
+  workspace.
 
 **After changing any Rust code, rebuild the extension before running Python
 tests**, otherwise Python will import the stale compiled `.so`:
 
 ```sh
-.venv/bin/maturin develop -m packages/faultforge/pyproject.toml
+.venv/bin/maturin develop -m faultforge/pyproject.toml
 ```
 
 ## Commands
@@ -82,7 +82,7 @@ tagged release. To cut a release, on `main`:
 1. Move the `CHANGELOG.md` `## [Unreleased]` section to a new
    `## [X.Y.Z] - YYYY-MM-DD` heading, leaving a fresh empty `[Unreleased]`
    above it.
-2. Bump `version` in `packages/faultforge/pyproject.toml` and
+2. Bump `version` in `faultforge/pyproject.toml` and
    `packages/faultforge_cli/pyproject.toml` to `X.Y.Z` (kept in lockstep;
    `Cargo.toml`'s `workspace.package.version` stays `0.0.0`, since the Rust
    crates aren't independently versioned or published). Also update the

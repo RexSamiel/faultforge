@@ -2,7 +2,7 @@
 name = "faultforge"
 version = "0.2.1"
 description = "A framework for reproducible hardware fault-injection experiments on PyTorch models"
-readme = "../../README.md"
+readme = "../README.md"
 authors = [
     { name = "Marten Roots", email = "marten.roots@gmail.com" }
 ]
@@ -39,5 +39,5 @@ build-backend = "maturin"
 [tool.maturin]
 features = ["pyo3/extension-module"]
 module-name = "faultforge._rust"
-manifest-path = "../../crates/bindings/Cargo.toml"
+manifest-path = "../crates/bindings/Cargo.toml"
 python-source = "src"

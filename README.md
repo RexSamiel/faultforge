@@ -53,25 +53,25 @@ installing a prebuilt wheel from PyPI.
 
 ### Installing from source
 
-Both packages live in this repository, under `packages/faultforge` and
+Both packages live in this repository, under `faultforge` and
 `packages/faultforge_cli`. Point pip at a subdirectory of whichever revision
 you want:
 
 ```sh
 # latest (main is kept in sync with the newest code going forward)
-pip install 'faultforge @ git+https://github.com/rezzubs/faultforge.git#subdirectory=packages/faultforge'
+pip install 'faultforge @ git+https://github.com/rezzubs/faultforge.git#subdirectory=faultforge'
 
 # latest release (the latest branch tracks the most recent tagged release)
-pip install 'faultforge @ git+https://github.com/rezzubs/faultforge.git@latest#subdirectory=packages/faultforge'
+pip install 'faultforge @ git+https://github.com/rezzubs/faultforge.git@latest#subdirectory=faultforge'
 
 # a specific released version
-pip install 'faultforge @ git+https://github.com/rezzubs/faultforge.git@v0.2.0#subdirectory=packages/faultforge'
+pip install 'faultforge @ git+https://github.com/rezzubs/faultforge.git@v0.2.0#subdirectory=faultforge'
 
 # a specific commit
-pip install 'faultforge @ git+https://github.com/rezzubs/faultforge.git@<commit-sha>#subdirectory=packages/faultforge'
+pip install 'faultforge @ git+https://github.com/rezzubs/faultforge.git@<commit-sha>#subdirectory=faultforge'
 ```
 
-Substitute `packages/faultforge_cli` for `packages/faultforge` (and
+Substitute `packages/faultforge_cli` for `faultforge` (and
 `faultforge-cli` for the package name before `@`) to install the CLI the same
 way.
 

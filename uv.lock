@@ -183,7 +183,7 @@ wheels = [
 [[package]]
 name = "faultforge"
 version = "0.2.1"
-source = { editable = "packages/faultforge" }
+source = { editable = "faultforge" }
 dependencies = [
     { name = "numpy" },
     { name = "pillow" },
@@ -226,7 +226,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "faultforge", editable = "packages/faultforge" },
+    { name = "faultforge", editable = "faultforge" },
     { name = "matplotlib", specifier = ">=3.10.5" },
     { name = "numpy", specifier = ">=2.3.1" },
     { name = "typer", specifier = ">=0.20.0" },

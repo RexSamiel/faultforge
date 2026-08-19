@@ -7,7 +7,7 @@ for the built-in experiment that ties all of this together, or the
 
 ## `ModelBundle`
 
-A [`ModelBundle`](../packages/faultforge/src/faultforge/loading.py) knows how
+A [`ModelBundle`](../faultforge/src/faultforge/loading.py) knows how
 to load a model together with its evaluation dataset. It's the thing an
 experiment asks for a model and data - it doesn't know anything about
 encoding or fault injection itself.
@@ -27,7 +27,7 @@ To support a new model source, subclass `ModelBundle` and implement:
   loaded (model name, dataset variant, ...), deliberately excluding
   environmental details like device or filesystem paths.
 
-The test suite's `_FakeBundle` (`packages/faultforge/tests/test_encoded_memory.py`)
+The test suite's `_FakeBundle` (`faultforge/tests/test_encoded_memory.py`)
 is a minimal example: it wraps a plain `nn.Linear` and a random
 `TensorDataset`, useful as a template when writing your own.
 

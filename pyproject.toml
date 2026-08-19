@@ -1,5 +1,5 @@
 [tool.uv.workspace]
-members = ["packages/faultforge", "packages/faultforge_cli"]
+members = ["faultforge", "packages/faultforge_cli"]
 
 [tool.uv]
 default-groups = ["dev"]
