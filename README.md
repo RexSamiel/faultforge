@@ -16,7 +16,7 @@ its first experiment.
 - [`Fingerprint`](docs/library.md#fingerprint)-based verification: resuming or
   comparing a saved result against a changed configuration fails loudly with
   a precise diff, instead of silently mixing incompatible data.
-- A composable [encoding framework](docs/experiments/encoded_memory.md#encoding-techniques)
+- A composable [encoding framework](experiments/encoded_memory/README.md#encoding-techniques)
   (`Encoder`/`Encoding`, chainable via `EncoderSequence`) with three built-in
   ECC-style techniques - SECDED (Hamming codes), MSET, and CEP - usable
   standalone or combined.
@@ -24,7 +24,7 @@ its first experiment.
   repeat-free fault-location sampler, and a batched injection API built for
   performance.
 - One ready-made experiment today,
-  [`encoded_memory`](docs/experiments/encoded_memory.md): fault injection into
+  [`encoded_memory`](experiments/encoded_memory/README.md): fault injection into
   ECC-protected model parameters, with built-in CIFAR-10/100 and ImageNet
   model/dataset loading and a CLI for recording and plotting results. It
   doubles as the reference implementation to follow when adding a new
@@ -113,13 +113,13 @@ packages, each pinned to a specific `faultforge` version rather than tracking
 `main`. There's one today, serving as the reference implementation for
 adding your own:
 
-- [Encoded Memory](docs/experiments/encoded_memory.md) - fault injection into
+- [Encoded Memory](experiments/encoded_memory/README.md) - fault injection into
   ECC-protected model parameters, covering the available encoding techniques,
   the `encoded-memory` CLI, and using the experiment directly as a library.
 
 ## Citation
 
-### [Encoded Memory](docs/experiments/encoded_memory.md)
+### [Encoded Memory](experiments/encoded_memory/README.md)
 
 There are two papers related to the encoded memory experiment.
 
