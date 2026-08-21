@@ -29,14 +29,13 @@ jobs:
       - name: Build wheel
         uses: PyO3/maturin-action@v1
         with:
-          working-directory: faultforge
           command: build
           args: --release --out dist --find-interpreter
 
       - uses: actions/upload-artifact@v4
         with:
           name: faultforge-wheel-${{ matrix.runner }}
-          path: faultforge/dist
+          path: dist
 
   sdist-faultforge:
     runs-on: ubuntu-latest
@@ -46,14 +45,13 @@ jobs:
       - name: Build sdist
         uses: PyO3/maturin-action@v1
         with:
-          working-directory: faultforge
           command: sdist
           args: --out dist
 
       - uses: actions/upload-artifact@v4
         with:
           name: faultforge-sdist
-          path: faultforge/dist
+          path: dist
 
   publish-faultforge:
     needs: [build-faultforge, sdist-faultforge]

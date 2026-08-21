@@ -5,7 +5,8 @@ on:
     branches: [main]
     paths:
       - "crates/**"
-      - "faultforge/**"
+      - "src/**"
+      - "tests/**"
       - "experiments/**"
       - "Cargo.toml"
       - "Cargo.lock"
@@ -15,7 +16,8 @@ on:
   pull_request:
     paths:
       - "crates/**"
-      - "faultforge/**"
+      - "src/**"
+      - "tests/**"
       - "experiments/**"
       - "Cargo.toml"
       - "Cargo.lock"

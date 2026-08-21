@@ -11,8 +11,8 @@ experiment framework and model/dataset loading live in Python on top of it.
 
 - `crates/` - Cargo workspace (Rust): `picker`, `memory`, `bindings` (the PyO3
   extension, compiled as `faultforge._rust`).
-- `faultforge/` - the `faultforge` library, the main member of the `uv`
-  workspace.
+- `src/` - the `faultforge` library's Python source; the repository root is the
+  `faultforge` package itself, the main member of the `uv` workspace.
 - `experiments/` - standalone experiment packages built on `faultforge`, e.g.
   `encoded_memory`. Each pins an exact `faultforge` version rather than tracking
   `main`, since an experiment is expected to stop being actively maintained once
@@ -23,7 +23,7 @@ experiment framework and model/dataset loading live in Python on top of it.
 tests**, otherwise Python will import the stale compiled `.so`:
 
 ```sh
-.venv/bin/maturin develop -m faultforge/pyproject.toml
+.venv/bin/maturin develop
 ```
 
 ## Commands
@@ -64,7 +64,7 @@ CI (`.github/workflows/python.yml`) runs the equivalent via `uv run`.
   used to simulate protected memory and inject faults into it.
 - `bindings` - the PyO3 crate exposing the above to Python as `faultforge._rust`.
 
-### Python (`faultforge/`, `experiments/`)
+### Python (`src/`, `experiments/`)
 
 Top-level modules under `faultforge/*.py` are thin, documented re-export
 shims; the real implementation lives in `faultforge/_internal/`. When changing
@@ -86,7 +86,7 @@ tagged release. To cut a release, on `main`:
 1. Move the `CHANGELOG.md` `## [Unreleased]` section to a new
    `## [X.Y.Z] - YYYY-MM-DD` heading, leaving a fresh empty `[Unreleased]`
    above it.
-2. Bump `version` in `faultforge/pyproject.toml` to `X.Y.Z`
+2. Bump `version` in `pyproject.toml` to `X.Y.Z`
    (`Cargo.toml`'s `workspace.package.version` stays `0.0.0`, since the Rust
    crates aren't independently versioned or published). Experiment packages
    under `experiments/` are *not* bumped as part of this - each pins whatever

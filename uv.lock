@@ -8,14 +8,6 @@ members = [
     "faultforge",
 ]
 
-[manifest.dependency-groups]
-dev = [
-    { name = "hypothesis", specifier = ">=6.148.7" },
-    { name = "pytest", specifier = ">=9.0.2" },
-    { name = "ruff", specifier = ">=0.12.4" },
-    { name = "ty", specifier = ">=0.0.49" },
-]
-
 [[package]]
 name = "annotated-doc"
 version = "0.0.4"
@@ -195,7 +187,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "faultforge", editable = "faultforge" },
+    { name = "faultforge", editable = "." },
     { name = "matplotlib", specifier = ">=3.10.5" },
     { name = "numpy", specifier = ">=2.3.1" },
     { name = "pydantic", specifier = ">=2.12.3" },
@@ -206,7 +198,7 @@ requires-dist = [
 [[package]]
 name = "faultforge"
 version = "0.2.1"
-source = { editable = "faultforge" }
+source = { editable = "." }
 dependencies = [
     { name = "numpy" },
     { name = "pillow" },
@@ -219,7 +211,11 @@ dependencies = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "hypothesis" },
     { name = "maturin" },
+    { name = "pytest" },
+    { name = "ruff" },
+    { name = "ty" },
 ]
 
 [package.metadata]
@@ -234,7 +230,13 @@ requires-dist = [
 ]
 
 [package.metadata.requires-dev]
-dev = [{ name = "maturin", specifier = ">=1.14.0" }]
+dev = [
+    { name = "hypothesis", specifier = ">=6.148.7" },
+    { name = "maturin", specifier = ">=1.14.0" },
+    { name = "pytest", specifier = ">=9.0.2" },
+    { name = "ruff", specifier = ">=0.12.4" },
+    { name = "ty", specifier = ">=0.0.49" },
+]
 
 [[package]]
 name = "filelock"

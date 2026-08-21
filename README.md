@@ -34,43 +34,49 @@ its first experiment.
 
 ## Installation
 
+### Prebuilt packages from PyPI
+
+Using pip:
+
 ```sh
 pip install faultforge
 ```
 
+Using uv:
+
+```sh
+uv add faultforge
+```
+
+
 [`faultforge`](https://pypi.org/project/faultforge/) is the only package
 published to PyPI - it's the framework only, with no CLI and no ready-made
-experiments. Building from source requires a Rust toolchain, since the
-library's performance-critical parts are a PyO3 extension compiled with
-[maturin](https://www.maturin.rs/). Install one with your system package
-manager or via [rustup](https://rustup.rs/). No toolchain is needed when
-installing a prebuilt wheel from PyPI.
+experiments. 
 
 ### Installing from source
 
-`faultforge` lives in this repository under `faultforge`. Point pip at a
-subdirectory of whichever revision you want:
+Building from source requires a Rust toolchain. Install one with your system
+package manager or via [rustup](https://rustup.rs/). This repository's root
+package is the `faultforge` library. Point pip at whichever revision you want:
 
 ```sh
-# latest (main is kept in sync with the newest code going forward)
-pip install 'faultforge @ git+https://github.com/rezzubs/faultforge.git#subdirectory=faultforge'
 
 # latest release (the latest branch tracks the most recent tagged release)
-pip install 'faultforge @ git+https://github.com/rezzubs/faultforge.git@latest#subdirectory=faultforge'
+pip install 'faultforge @ git+https://github.com/rezzubs/faultforge.git@latest'
 
 # a specific released version
-pip install 'faultforge @ git+https://github.com/rezzubs/faultforge.git@v0.2.0#subdirectory=faultforge'
+pip install 'faultforge @ git+https://github.com/rezzubs/faultforge.git@v0.2.1'
 
 # a specific commit
-pip install 'faultforge @ git+https://github.com/rezzubs/faultforge.git@<commit-sha>#subdirectory=faultforge'
+pip install 'faultforge @ git+https://github.com/rezzubs/faultforge.git@<commit-sha>'
+
+# development (main is kept in sync with the newest code, can break at any point)
+pip install 'faultforge @ git+https://github.com/rezzubs/faultforge.git'
 ```
 
-Ready-made experiments (see [Experiments](#experiments) below) aren't
-published to PyPI - install one the same way, pointed at its own
-subdirectory under `experiments/`, e.g.
-`#subdirectory=experiments/encoded_memory`.
-
-FaultForge requires Python 3.14 or newer.
+Ready-made experiments (see [Experiments](#experiments) below) aren't published
+to PyPI - install one the same way, pointed at its own subdirectory under
+`experiments/` See each experiment's README for details.
 
 ## Quick example
 

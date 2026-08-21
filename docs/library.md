@@ -7,7 +7,7 @@ for the reference experiment that ties all of this together, or the
 
 ## `ModelBundle`
 
-A [`ModelBundle`](../faultforge/src/faultforge/loading.py) knows how
+A [`ModelBundle`](../src/faultforge/loading.py) knows how
 to load a model together with its evaluation dataset. It's the thing an
 experiment asks for a model and data - it doesn't know anything about
 encoding or fault injection itself.
