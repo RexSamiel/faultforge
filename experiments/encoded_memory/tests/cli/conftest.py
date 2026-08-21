@@ -15,8 +15,8 @@ from encoded_memory import (
     EncodedFaultInjection,
     ReliabilityMetric,
 )
-from faultforge import DeviceLike, Fingerprint
-from faultforge.dataset import BatchedDataset
+from faultforge import Fingerprint
+from faultforge.dataset import BatchedDataset, DeviceLike
 from faultforge.encoding import IdentityEncoder
 from faultforge.loading import ModelBundle
 from encoded_memory.results import (

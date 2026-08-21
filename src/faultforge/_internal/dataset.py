@@ -11,14 +11,14 @@ import torch
 from torch import Tensor
 from torch.utils.data import DataLoader, Dataset
 
-from faultforge._internal.common import (
-    DEFAULT_BATCH_SIZE,
-    DEFAULT_DEVICE,
-    DeviceLike,
-)
 from faultforge._internal.progress import Progress, stage
 
 logger = logging.getLogger(__name__)
+
+type DeviceLike = torch.device | str | int
+
+DEFAULT_DEVICE = torch.device("cpu")
+DEFAULT_BATCH_SIZE: int = 256
 
 
 @dataclass(slots=True)

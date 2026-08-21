@@ -14,24 +14,18 @@ from pathlib import Path
 from typing import Annotated, Literal, final, override
 
 import torch
-from faultforge import (
+from faultforge import BitFlip, Fingerprint, Picker, bitwise_xor
+from faultforge.dataset import (
     DEFAULT_BATCH_SIZE,
     DEFAULT_DEVICE,
-    DEFAULT_DTYPE,
-    AnyPath,
-    BitFlip,
+    BatchedDataset,
     DeviceLike,
-    Fingerprint,
-    Picker,
-    bitwise_xor,
-    is_compressed,
-    open_text,
 )
-from faultforge.dataset import BatchedDataset
 from faultforge.dtype import EncodingDtype, FiDtype
 from faultforge.encoding import EncodedModule, Encoder
 from faultforge.experiment import Experiment, ExperimentDisplay
-from faultforge.loading import ModelBundle
+from faultforge.io import AnyPath, is_compressed, open_text
+from faultforge.loading import DEFAULT_DTYPE, ModelBundle
 from faultforge.progress import Progress, stage
 from pydantic import BaseModel, Field
 from torch import Tensor, nn

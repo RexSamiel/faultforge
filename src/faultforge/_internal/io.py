@@ -1,20 +1,11 @@
-"""Common items shared across other modules."""
+"""File I/O helpers."""
 
 from compression import zstd
 from os import PathLike
 from pathlib import Path
 from typing import IO, Literal
 
-import torch
-
-type DeviceLike = torch.device | str | int
 type AnyPath = str | PathLike[str]
-
-DEFAULT_DEVICE = torch.device("cpu")
-DEFAULT_DTYPE: torch.dtype = torch.float32
-DEFAULT_BATCH_SIZE: int = 256
-
-CACHE_DIRECTORY = Path("~/.cache/faultforge/").expanduser()
 
 _ZSTD_MAGIC = b"\x28\xb5\x2f\xfd"
 """The first 4 bytes of any zstd-compressed frame."""

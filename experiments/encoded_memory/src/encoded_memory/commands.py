@@ -10,7 +10,7 @@ import torch
 import typer
 from matplotlib.backends.registry import BackendFilter, backend_registry
 from matplotlib.figure import Figure
-from faultforge import DEFAULT_BATCH_SIZE, is_compressed
+from faultforge.dataset import DEFAULT_BATCH_SIZE
 from faultforge.encoding import (
     CepEncoder,
     CepScheme,
@@ -34,6 +34,7 @@ from encoded_memory import (
     discard_bitmasks_in_file,
 )
 from faultforge.fingerprint import FingerprintError
+from faultforge.io import is_compressed
 from faultforge.loading import (
     Cifar,
     CifarDataset,

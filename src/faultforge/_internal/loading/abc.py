@@ -5,10 +5,11 @@ import abc
 import torch
 from torch import nn
 
-from faultforge._internal.common import DEFAULT_DTYPE, DeviceLike
-from faultforge._internal.dataset import BatchedDataset
+from faultforge._internal.dataset import BatchedDataset, DeviceLike
 from faultforge._internal.fingerprint import Fingerprint
 from faultforge._internal.progress import Progress
+
+DEFAULT_DTYPE: torch.dtype = torch.float32
 
 
 class ModelBundle(abc.ABC):

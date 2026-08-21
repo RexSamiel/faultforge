@@ -20,6 +20,8 @@ submodules for details.
   with its evaluation dataset.
 - `faultforge.progress`: `Progress`, for reporting on long-running operations
   (dataset loading, encoding, fault injection, ...) via periodic log messages.
+- `faultforge.io`: File I/O helpers (`open_text`, `is_compressed`) for
+  reading/writing save files transparently through zstd compression.
 
 To add a new kind of experiment, subclass `Experiment` and reuse
 `faultforge.loading`/`faultforge.dataset` for model and data handling. This
@@ -43,22 +45,10 @@ root rather than in their own submodule:
   whole batch rather than once per fault.
 - `bitwise_xor`: elementwise bitwise xor of two same-shape, same-dtype tensors
   (floats bitcast to same-width integers first).
-- `open_text`: open a path in text mode, transparently through zstd
-  compression if requested - the same helper `Experiment.save`/`load_from`
-  use internally, useful when writing your own save-file format.
 """
 
 import sys
 
-from faultforge._internal.common import (
-    DEFAULT_BATCH_SIZE,
-    DEFAULT_DEVICE,
-    DEFAULT_DTYPE,
-    AnyPath,
-    DeviceLike,
-    is_compressed,
-    open_text,
-)
 from faultforge._internal.fault import BitFlip, Fault, StuckAt
 from faultforge._internal.fingerprint import Fingerprint
 from faultforge._internal.tensor import (
@@ -72,19 +62,12 @@ from faultforge._rust import Picker
 from . import _rust
 
 __all__ = [
-    "AnyPath",
     "BitFlip",
-    "DEFAULT_BATCH_SIZE",
-    "DEFAULT_DEVICE",
-    "DEFAULT_DTYPE",
-    "DeviceLike",
     "Fault",
     "Fingerprint",
     "Picker",
     "StuckAt",
     "bitwise_xor",
-    "is_compressed",
-    "open_text",
     "tensor_list_dtype",
     "tensor_list_fault",
     "tensor_list_faults",

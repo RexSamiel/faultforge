@@ -26,7 +26,7 @@ from typing import (
 
 import scipy.stats
 
-from faultforge._internal.common import AnyPath, is_compressed, open_text
+from faultforge._internal.io import AnyPath, is_compressed, open_text
 
 logger = logging.getLogger(__name__)
 

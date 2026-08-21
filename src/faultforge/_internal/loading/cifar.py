@@ -2,23 +2,24 @@
 
 import enum
 from dataclasses import dataclass
+from pathlib import Path
 from typing import override
 
 import torch
 import torchvision
 from torch import nn
 
-from faultforge._internal.common import (
-    CACHE_DIRECTORY,
+from faultforge._internal.dataset import (
     DEFAULT_BATCH_SIZE,
     DEFAULT_DEVICE,
-    DEFAULT_DTYPE,
+    BatchedDataset,
     DeviceLike,
 )
-from faultforge._internal.dataset import BatchedDataset
 from faultforge._internal.fingerprint import Fingerprint
-from faultforge._internal.loading.abc import ModelBundle
+from faultforge._internal.loading.abc import DEFAULT_DTYPE, ModelBundle
 from faultforge._internal.progress import Progress, stage
+
+CACHE_DIRECTORY = Path("~/.cache/faultforge/").expanduser()
 
 
 class CifarModel(enum.StrEnum):
