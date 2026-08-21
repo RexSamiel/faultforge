@@ -40,7 +40,7 @@ jobs:
           enable-cache: true
 
       - name: Install
-        run: uv sync --locked
+        run: uv sync --locked --all-packages
 
       - name: Type check
         run: uv run ty check
